@@ -1,23 +1,32 @@
 package com.lngbk.api
 
 import akka.actor.Props
-import com.lngbk.authentication.AuthenticationActor
-import com.lngbk.commons.discovery.LngbkRouter
-import com.lngbk.commons.management.SystemManager
-import com.lngbk.commons.management.bootstrap.{DependenciesManager, ServiceBootstrapDirector}
+import com.lngbk.commons.api.client.LngbkApi
+import com.lngbk.commons.api.errors.{ApiCriticalError, CommonErrorCodes}
+import com.lngbk.commons.api.server.LngbkActor
 
-/**
-  * Created by beolnix on 09/09/16.
-  */
-object AuthenticationApi {
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
-  private val SERVICE_NAME = "authentication-service"
-  private val _router: LngbkRouter = LngbkRouter(
-    "authentication-service",
-    SystemManager.system,
-    Props[AuthenticationActor]
-  )
 
-  DependenciesManager.checkIn(_router)
+abstract class AuthenticationActor extends LngbkActor
+
+object AuthenticationApi extends LngbkApi("authentication-service", Props[AuthenticationActor]) {
+
+  def login(request: LoginRequest): Future[LoginResponse] = {
+    val response: Future[Any] = router ? request
+    response.map {
+      case LoginResponse(accessToken, refreshToken, period, errorCode) => LoginResponse(accessToken, refreshToken, period, errorCode)
+      case _ => throw new ApiCriticalError(CommonErrorCodes.PIZDEC)
+    }
+  }
+
+  def verify(request: VerifyRequest): Future[VerifyResponse] = {
+    val response = router ? request
+    response.map {
+      case VerifyResponse(userUuid, login, roles, errorCode) => VerifyResponse(userUuid, login, roles, errorCode)
+      case _ => throw new ApiCriticalError(CommonErrorCodes.PIZDEC)
+    }
+  }
 
 }

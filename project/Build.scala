@@ -6,7 +6,7 @@ object MyBuild extends Build {
   lazy val root = project.in(file(".")).aggregate(service, api)
 
   val akkaVersion = "2.4.10"
-  val commonsVersion = "0.0.1-SNAPSHOT"
+  val commonsVersion = "0.0.8-SNAPSHOT"
 
   lazy val service = project
     .settings(
@@ -14,6 +14,8 @@ object MyBuild extends Build {
 
         Seq(
           "com.lngbk" %% "management" % commonsVersion changing(),
+          "com.lngbk" %% "api" % commonsVersion changing(),
+          "com.lngbk" %% "service" % commonsVersion changing(),
 
           "com.typesafe.akka" %% "akka-actor" % akkaVersion,
           "com.typesafe.akka" %% "akka-remote" % akkaVersion,
@@ -22,7 +24,7 @@ object MyBuild extends Build {
           "org.scalatest" %% "scalatest" % "2.2.4" % "test",
           "com.typesafe.akka" %% "akka-multi-node-testkit" % akkaVersion % "test"
         )
-    )
+    ).dependsOn(api)
 
   lazy val api = project
     .settings(
@@ -30,6 +32,7 @@ object MyBuild extends Build {
 
         Seq(
           "com.lngbk" %% "management" % commonsVersion changing(),
+          "com.lngbk" %% "api" % commonsVersion changing(),
 
           "com.typesafe.akka" %% "akka-actor" % akkaVersion,
           "com.typesafe.akka" %% "akka-remote" % akkaVersion,
