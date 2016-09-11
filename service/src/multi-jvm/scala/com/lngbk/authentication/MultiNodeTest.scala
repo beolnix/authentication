@@ -61,28 +61,25 @@ class MultiNodeAuthentication extends MultiNodeSpec(MultiNodeAuthenticationConfi
         println("Starting client")
         SystemManager.initWithSystem(system)
         enterBarrier("deployed")
-        AuthenticationApi
+        val api = new AuthenticationApi(Some(node(node1)))
         ServiceBootstrapDirector.initService(true, true)
 
-        val response = AuthenticationApi.login(LoginRequest("login", "password"))
+        val response = api.login(LoginRequest("login", "password"))
         val result = Await.ready(response, Duration.Inf).value.get
 
         println(result)
         //        result must not be null
+        enterBarrier("finished")
       }
 
       runOn(node1) {
         println("Starting server")
         SystemManager.initWithSystem(system)
-        val port = 15123
-        val isFree = available(port)
-        println(s"Port $port $isFree")
         AuthenticationService.main(Array[String]())
         enterBarrier("deployed")
+        enterBarrier("finished")
       }
     }
-
-    enterBarrier("finished")
   }
 
   def available(port:Int): Boolean = {

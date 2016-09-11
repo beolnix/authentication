@@ -1,6 +1,6 @@
 package com.lngbk.api
 
-import akka.actor.Props
+import akka.actor.{ActorPath, Props, RootActorPath}
 import com.lngbk.commons.api.client.LngbkApi
 import com.lngbk.commons.api.errors.{ApiCriticalError, CommonErrorCodes}
 import com.lngbk.commons.api.server.LngbkActor
@@ -12,7 +12,7 @@ object AuthenticationConstants {
   val serviceName = "authentication"
 }
 
-object AuthenticationApi extends LngbkApi(AuthenticationConstants.serviceName) {
+class AuthenticationApi(actorPath: Option[ActorPath] = None) extends LngbkApi(AuthenticationConstants.serviceName, actorPath = actorPath) {
 
   initApi()
 
