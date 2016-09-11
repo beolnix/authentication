@@ -68,7 +68,7 @@ class MultiNodeAuthentication extends MultiNodeSpec(MultiNodeAuthenticationConfi
         val result = Await.ready(response, Duration.Inf).value.get
 
         println(result)
-        //        result must not be null
+        result must not be null
         enterBarrier("finished")
       }
 
