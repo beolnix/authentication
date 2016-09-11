@@ -8,7 +8,7 @@ object MyBuild extends Build {
   lazy val root = project.in(file(".")).aggregate(service, api)
 
   val akkaVersion = "2.4.10"
-  val commonsVersion = "0.0.24-SNAPSHOT"
+  val commonsVersion = "0.0.26-SNAPSHOT"
 
   lazy val service = project
     .settings(SbtMultiJvm.multiJvmSettings: _*)

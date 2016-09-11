@@ -7,6 +7,7 @@ import akka.remote.testkit.{MultiNodeConfig, MultiNodeSpec, MultiNodeSpecCallbac
 import akka.testkit.ImplicitSender
 import com.example.STMultiNodeSpec
 import com.lngbk.api.{AuthenticationApi, LoginRequest}
+import com.lngbk.commons.management.SystemManager
 import com.lngbk.commons.management.bootstrap.ServiceBootstrapDirector
 import com.typesafe.config.ConfigFactory
 import org.scalatest.{BeforeAndAfterAll, MustMatchers, WordSpec, WordSpecLike}
@@ -58,6 +59,7 @@ class MultiNodeAuthentication extends MultiNodeSpec(MultiNodeAuthenticationConfi
 
       runOn(node2) {
         println("Starting client")
+        SystemManager.initWithSystem(system)
         enterBarrier("deployed")
         AuthenticationApi
         ServiceBootstrapDirector.initService(true, true)
@@ -71,9 +73,10 @@ class MultiNodeAuthentication extends MultiNodeSpec(MultiNodeAuthenticationConfi
 
       runOn(node1) {
         println("Starting server")
+        SystemManager.initWithSystem(system)
         val port = 15123
         val isFree = available(port)
-        println(s"Port $isFree")
+        println(s"Port $port $isFree")
         AuthenticationService.main(Array[String]())
         enterBarrier("deployed")
       }
