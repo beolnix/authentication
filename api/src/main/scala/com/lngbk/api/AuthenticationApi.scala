@@ -8,15 +8,11 @@ import com.lngbk.commons.api.server.LngbkActor
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class AuthenticationActor extends LngbkActor {
-  override def process: Receive = ???
-}
-
-object AuthenticationActor {
+object AuthenticationConstants {
   val serviceName = "authentication"
 }
 
-object AuthenticationApi extends LngbkApi(AuthenticationActor.serviceName, Props[AuthenticationActor]) {
+object AuthenticationApi extends LngbkApi(AuthenticationConstants.serviceName) {
 
   initApi()
 

@@ -1,0 +1,1 @@
+-Dakka.remote.netty.tcp.port=9004 -Dservice.http.port=9005 -Dservice.type=authentication -Dakka.remote.netty.tcp.hostname=192.168.1.67 -DAUTHENTICATION_HOST=192.168.1.67 -DAUTHENTICATION_PORT=9004 -Dconsul.agent.ip=127.0.0.1 -Dconsul.agent.port=8500

@@ -1,0 +1,1 @@
+-Dakka.remote.netty.tcp.port=9006 -Dservice.http.port=9007 -Dservice.type=smokeClient -Dakka.remote.netty.tcp.hostname=192.168.1.67 -DAUTHENTICATION_HOST=192.168.1.67 -DAUTHENTICATION_PORT=9006 -Dconsul.agent.ip=127.0.0.1 -Dconsul.agent.port=8500
