@@ -1,9 +1,6 @@
 package com.lngbk.authentication
 
-import akka.actor.Props
 import com.lngbk.api.{AuthenticationApi, LoginRequest}
-import com.lngbk.authentication.actor.AuthenticationActor
-import com.lngbk.commons.management.SystemManager
 import com.lngbk.commons.management.bootstrap.ServiceBootstrapDirector
 import org.scalatest.{MustMatchers, WordSpec}
 
@@ -18,7 +15,7 @@ class AuthenticationSmokeTestMultiJvmServerNode1 extends WordSpec with MustMatch
     "Successfully start" in {
       AuthenticationService.main(Array[String]())
       var count = 0
-      while (count < 10) {
+      while (count < 5) {
         Thread.sleep(1000)
         println(s"$count: .")
         count += 1
@@ -34,7 +31,7 @@ class AuthenticationSmokeTestMultiJvmClientNode2 extends WordSpec with MustMatch
       AuthenticationApi
       ServiceBootstrapDirector.initService(true, true)
 
-      val response = AuthenticationApi.login(LoginRequest("login", "password", "test1"))
+      val response = AuthenticationApi.login(LoginRequest("login", "password"))
       val result = Await.ready(response, Duration.Inf).value.get
 
       println(result)

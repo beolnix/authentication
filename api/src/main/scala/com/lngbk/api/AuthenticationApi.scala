@@ -19,7 +19,7 @@ object AuthenticationApi extends LngbkApi(AuthenticationConstants.serviceName) {
   def login(request: LoginRequest): Future[LoginResponse] = {
     val response: Future[Any] = router ? request
     response.map {
-      case LoginResponse(accessToken, refreshToken, period, errorCode) => LoginResponse(accessToken, refreshToken, period, errorCode)
+      case LoginResponse(accessToken, refreshToken, period) => LoginResponse(accessToken, refreshToken, period)
       case _ => throw new ApiCriticalError(CommonErrorCodes.PIZDEC)
     }
   }
@@ -27,7 +27,7 @@ object AuthenticationApi extends LngbkApi(AuthenticationConstants.serviceName) {
   def verify(request: VerifyRequest): Future[VerifyResponse] = {
     val response = router ? request
     response.map {
-      case VerifyResponse(userUuid, login, roles, errorCode) => VerifyResponse(userUuid, login, roles, errorCode)
+      case VerifyResponse(userUuid, login, roles) => VerifyResponse(userUuid, login, roles)
       case _ => throw new ApiCriticalError(CommonErrorCodes.PIZDEC)
     }
   }

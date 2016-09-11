@@ -23,8 +23,8 @@ class AuthenticationActor extends Actor {
       logger.info(s"Got version request, send back: $response")
       sender() ! response
     }
-    case LoginRequest(login, password, requestUuid) => {
-      sender() ! LoginResponse("test", "test", 123, Option.empty)
+    case LoginRequest(login, password) => {
+      sender() ! LoginResponse("test", "test", 123)
     }
     case other => {
       println(s"SERVER GOT $other")
