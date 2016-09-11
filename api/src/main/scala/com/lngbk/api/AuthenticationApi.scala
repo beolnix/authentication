@@ -8,10 +8,13 @@ import com.lngbk.commons.api.server.LngbkActor
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-
 abstract class AuthenticationActor extends LngbkActor
 
-object AuthenticationApi extends LngbkApi("authentication-service", Props[AuthenticationActor]) {
+object AuthenticationActor {
+  val serviceName = "authentication"
+}
+
+object AuthenticationApi extends LngbkApi(AuthenticationActor.serviceName, Props[AuthenticationActor]) {
 
   def login(request: LoginRequest): Future[LoginResponse] = {
     val response: Future[Any] = router ? request
