@@ -31,4 +31,12 @@ class AuthenticationApi(actorPath: Option[ActorPath] = None) extends LngbkApi(Au
     }
   }
 
+  def signUp(request: SignUpRequest): Future[SignUpResponse] = {
+    val response = router ? request
+    response.map {
+      case SignUpResponse(userUuid, errorCode) => SignUpResponse(userUuid, errorCode)
+      case _ => throw new ApiCriticalError(CommonErrorCodes.PIZDEC)
+    }
+  }
+
 }

@@ -1,8 +1,10 @@
 package com.lngbk.authentication.actor
 
+import java.util.UUID
+
 import akka.actor.Actor
 import akka.actor.Actor.Receive
-import com.lngbk.api.{LoginRequest, LoginResponse}
+import com.lngbk.api._
 import com.lngbk.commons.api.dto.{LngbkVersionRequest, LngbkVersionResponse}
 import com.lngbk.commons.api.errors.{ApiCriticalError, CommonErrorCodes}
 import com.lngbk.commons.api.server.LngbkActor
@@ -17,7 +19,16 @@ class AuthenticationActor extends LngbkActor {
 
   override def process: Receive = {
     case LoginRequest(login, password, requestUuid) => {
+      logger.info(s"Got login request: $login, password, $requestUuid")
       sender() ! LoginResponse("test", "test", 123, None)
+    }
+    case SignUpRequest(email, password, requestUuid) => {
+      logger.info(s"got sign up request: $email, password, $requestUuid")
+      sender() ! SignUpResponse(UUID.randomUUID().toString, None)
+    }
+    case VerifyRequest(accessToken, requestUuid) => {
+      logger.info(s"got verify request: $accessToken, $requestUuid")
+      sender() ! VerifyResponse(UUID.randomUUID().toString, "test", Set(), None)
     }
     case other => {
       println(s"SERVER GOT $other")

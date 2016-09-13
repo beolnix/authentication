@@ -50,24 +50,28 @@ class MultiNodeAuthentication extends MultiNodeSpec(MultiNodeAuthenticationConfi
     "Send and receive login msg" in {
       runOn(clientNode) {
         println("Starting client")
+
         SystemManager.initWithSystem(system)
         enterBarrier("deployed")
+
         val api = new AuthenticationApi(Some(node(serverNode)))
         ServiceBootstrapDirector.initService(true, true)
 
         val response = api.login(LoginRequest("login", "password", UUID.randomUUID().toString))
         val result = Await.ready(response, Duration.Inf).value.get
-
         println(result)
         result must not be null
+
         enterBarrier("finished")
       }
 
       runOn(serverNode) {
         println("Starting server")
+
         SystemManager.initWithSystem(system)
         AuthenticationService.main(Array[String]())
         enterBarrier("deployed")
+
         enterBarrier("finished")
       }
     }

@@ -5,7 +5,7 @@ import java.util.UUID
 import com.lngbk.commons.api.dto.{LngbkRequest, LngbkResponse}
 
 case class VerifyResponse(
-                           userUuid: UUID,
+                           userUuid: String,
                            login: String,
                            roles: Set[String],
                            errorCode: Option[String]
@@ -42,6 +42,25 @@ case class LoginRequest(
                        ) extends LngbkRequest(requestUuid) {
   def this() {
     this(null, null, UUID.randomUUID().toString)
+  }
+}
+
+case class SignUpRequest(
+                        email: String,
+                        password: String,
+                        requestUuid: String
+                        ) extends LngbkRequest(requestUuid) {
+  def this() {
+    this(null, null, UUID.randomUUID().toString)
+  }
+}
+
+case class SignUpResponse(
+                         userUuid: String,
+                         errorCode: Option[String]
+                         ) extends LngbkResponse(errorCode) {
+  def this() {
+    this(null, None)
   }
 }
 
