@@ -1,20 +1,18 @@
 package com.lngbk.authentication
 
-import java.io.IOException
 import java.net.{DatagramSocket, ServerSocket}
 
-import akka.remote.testkit.{MultiNodeConfig, MultiNodeSpec, MultiNodeSpecCallbacks}
+import akka.remote.testkit.{MultiNodeConfig, MultiNodeSpec}
 import akka.testkit.ImplicitSender
-import com.example.STMultiNodeSpec
 import com.lngbk.api.{AuthenticationApi, LoginRequest}
 import com.lngbk.commons.management.SystemManager
 import com.lngbk.commons.management.bootstrap.ServiceBootstrapDirector
 import com.typesafe.config.ConfigFactory
-import org.scalatest.{BeforeAndAfterAll, MustMatchers, WordSpec, WordSpecLike}
+import org.scalatest.MustMatchers
 
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
-import org.scalatest.{BeforeAndAfterAll, WordSpecLike}
+import org.scalatest.WordSpecLike
 
 object MultiNodeAuthenticationConfig extends MultiNodeConfig {
   val node1 = role("node1")
@@ -84,30 +82,30 @@ class MultiNodeAuthentication extends MultiNodeSpec(MultiNodeAuthenticationConfi
 
   def available(port:Int): Boolean = {
     if (port < 0 || port > 99999) {
-      throw new IllegalArgumentException("Invalid start port: " + port);
+      throw new IllegalArgumentException("Invalid start port: " + port)
     }
 
-    var ss: ServerSocket = null;
-    var ds: DatagramSocket = null;
+    var ss: ServerSocket = null
+    var ds: DatagramSocket = null
     try {
-      ss = new ServerSocket(port);
-      ss.setReuseAddress(true);
-      ds = new DatagramSocket(port);
-      ds.setReuseAddress(true);
+      ss = new ServerSocket(port)
+      ss.setReuseAddress(true)
+      ds = new DatagramSocket(port)
+      ds.setReuseAddress(true)
       return true;
 
     } finally {
       if (ds != null) {
-        ds.close();
+        ds.close()
       }
 
       if (ss != null) {
 
-        ss.close();
+        ss.close()
 
       }
     }
 
-    return false;
+    return false
   }
 }
