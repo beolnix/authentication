@@ -18,7 +18,7 @@ class AuthenticationApi(actorPath: Option[ActorPath] = None) extends LngbkApi(Au
   def login(request: LoginRequest): Future[LoginResponse] = {
     val response: Future[Any] = router ? request
     response.map {
-      case LoginResponse(accessToken, refreshToken, period) => LoginResponse(accessToken, refreshToken, period)
+      case LoginResponse(accessToken, refreshToken, period, errorCode) => LoginResponse(accessToken, refreshToken, period, errorCode)
       case _ => throw new ApiCriticalError(CommonErrorCodes.PIZDEC)
     }
   }
@@ -26,7 +26,7 @@ class AuthenticationApi(actorPath: Option[ActorPath] = None) extends LngbkApi(Au
   def verify(request: VerifyRequest): Future[VerifyResponse] = {
     val response = router ? request
     response.map {
-      case VerifyResponse(userUuid, login, roles) => VerifyResponse(userUuid, login, roles)
+      case VerifyResponse(userUuid, login, roles, errorCode) => VerifyResponse(userUuid, login, roles, errorCode)
       case _ => throw new ApiCriticalError(CommonErrorCodes.PIZDEC)
     }
   }

@@ -1,5 +1,7 @@
 package com.lngbk.authentication
 
+import java.util.UUID
+
 import com.lngbk.api.{AuthenticationApi, LoginRequest}
 import com.lngbk.commons.management.bootstrap.ServiceBootstrapDirector
 import org.scalatest.{MustMatchers, WordSpec}
@@ -31,7 +33,7 @@ class AuthenticationSmokeTestMultiJvmClientNode2 extends WordSpec with MustMatch
       val api = new AuthenticationApi()
       ServiceBootstrapDirector.initService(true, true)
       Thread.sleep(1500)
-      val response = api.login(LoginRequest("login", "password"))
+      val response = api.login(LoginRequest("login", "password", UUID.randomUUID().toString))
       val result = Await.ready(response, Duration.Inf).value.get
 
       println(result)

@@ -16,8 +16,8 @@ class AuthenticationActor extends LngbkActor {
   private val logger: Logger = LoggerFactory.getLogger(classOf[AuthenticationActor])
 
   override def process: Receive = {
-    case LoginRequest(login, password) => {
-      sender() ! LoginResponse("test", "test", 123)
+    case LoginRequest(login, password, requestUuid) => {
+      sender() ! LoginResponse("test", "test", 123, None)
     }
     case other => {
       println(s"SERVER GOT $other")

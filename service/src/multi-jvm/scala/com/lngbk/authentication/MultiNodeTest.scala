@@ -1,5 +1,7 @@
 package com.lngbk.authentication
 
+import java.util.UUID
+
 import akka.remote.testkit.{MultiNodeConfig, MultiNodeSpec}
 import akka.testkit.ImplicitSender
 import com.lngbk.api.{AuthenticationApi, LoginRequest}
@@ -53,7 +55,7 @@ class MultiNodeAuthentication extends MultiNodeSpec(MultiNodeAuthenticationConfi
         val api = new AuthenticationApi(Some(node(serverNode)))
         ServiceBootstrapDirector.initService(true, true)
 
-        val response = api.login(LoginRequest("login", "password"))
+        val response = api.login(LoginRequest("login", "password", UUID.randomUUID().toString))
         val result = Await.ready(response, Duration.Inf).value.get
 
         println(result)
