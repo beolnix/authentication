@@ -12,7 +12,7 @@ object AuthenticationConstants {
 }
 
 object AuthenticationApi {
-  private var api: AuthenticationApi = null
+  private var api: AuthenticationApi = _
 
   def apply(actorPath: Option[ActorPath] = None): Unit = {
     api = new AuthenticationApi(actorPath)
