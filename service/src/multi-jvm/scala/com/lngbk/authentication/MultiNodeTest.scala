@@ -1,7 +1,5 @@
 package com.lngbk.authentication
 
-import java.net.{DatagramSocket, ServerSocket}
-
 import akka.remote.testkit.{MultiNodeConfig, MultiNodeSpec}
 import akka.testkit.ImplicitSender
 import com.lngbk.api.{AuthenticationApi, LoginRequest}
@@ -15,10 +13,10 @@ import scala.concurrent.duration.Duration
 import org.scalatest.WordSpecLike
 
 object MultiNodeAuthenticationConfig extends MultiNodeConfig {
-  val node1 = role("node1")
-  val node2 = role("node2")
+  val serverNode = role("node1")
+  val clientNode = role("node2")
 
-  nodeConfig(node2) {
+  nodeConfig(clientNode) {
     ConfigFactory.parseString(
       """
         |akka {
@@ -34,9 +32,7 @@ class MultiNodeAuthenticationSpecMultiJvmNode1 extends MultiNodeAuthentication
 
 class MultiNodeAuthenticationSpecMultiJvmNode2 extends MultiNodeAuthentication
 
-object MultiNodeAuthentication {
-
-}
+object MultiNodeAuthentication
 
 /**
   * Created by beolnix on 11/09/16.
@@ -49,17 +45,12 @@ class MultiNodeAuthentication extends MultiNodeSpec(MultiNodeAuthenticationConfi
   def initialParticipants = roles.size
 
   "A multinode test" must {
-    "wait for all nodes to enter a barrier" in {
-      enterBarrier("startup")
-    }
-
     "Send and receive login msg" in {
-
-      runOn(node2) {
+      runOn(clientNode) {
         println("Starting client")
         SystemManager.initWithSystem(system)
         enterBarrier("deployed")
-        val api = new AuthenticationApi(Some(node(node1)))
+        val api = new AuthenticationApi(Some(node(serverNode)))
         ServiceBootstrapDirector.initService(true, true)
 
         val response = api.login(LoginRequest("login", "password"))
@@ -70,7 +61,7 @@ class MultiNodeAuthentication extends MultiNodeSpec(MultiNodeAuthenticationConfi
         enterBarrier("finished")
       }
 
-      runOn(node1) {
+      runOn(serverNode) {
         println("Starting server")
         SystemManager.initWithSystem(system)
         AuthenticationService.main(Array[String]())
@@ -78,34 +69,5 @@ class MultiNodeAuthentication extends MultiNodeSpec(MultiNodeAuthenticationConfi
         enterBarrier("finished")
       }
     }
-  }
-
-  def available(port:Int): Boolean = {
-    if (port < 0 || port > 99999) {
-      throw new IllegalArgumentException("Invalid start port: " + port)
-    }
-
-    var ss: ServerSocket = null
-    var ds: DatagramSocket = null
-    try {
-      ss = new ServerSocket(port)
-      ss.setReuseAddress(true)
-      ds = new DatagramSocket(port)
-      ds.setReuseAddress(true)
-      return true;
-
-    } finally {
-      if (ds != null) {
-        ds.close()
-      }
-
-      if (ss != null) {
-
-        ss.close()
-
-      }
-    }
-
-    return false
   }
 }

@@ -15,7 +15,7 @@ class AuthenticationSmokeTestMultiJvmServerNode1 extends WordSpec with MustMatch
     "Successfully start" in {
       AuthenticationService.main(Array[String]())
       var count = 0
-      while (count < 5) {
+      while (count < 10) {
         Thread.sleep(1000)
         println(s"$count: .")
         count += 1
@@ -30,7 +30,7 @@ class AuthenticationSmokeTestMultiJvmClientNode2 extends WordSpec with MustMatch
       Thread.sleep(3000)
       val api = new AuthenticationApi()
       ServiceBootstrapDirector.initService(true, true)
-
+      Thread.sleep(1500)
       val response = api.login(LoginRequest("login", "password"))
       val result = Await.ready(response, Duration.Inf).value.get
 

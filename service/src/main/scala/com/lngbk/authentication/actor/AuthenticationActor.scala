@@ -14,7 +14,7 @@ import org.slf4j.{Logger, LoggerFactory}
   */
 class AuthenticationActor extends LngbkActor {
   private val logger: Logger = LoggerFactory.getLogger(classOf[AuthenticationActor])
-  
+
   override def process: Receive = {
     case LoginRequest(login, password) => {
       sender() ! LoginResponse("test", "test", 123)

@@ -1,9 +1,8 @@
 package com.lngbk.api
 
-import akka.actor.{ActorPath, Props, RootActorPath}
+import akka.actor.{ActorPath}
 import com.lngbk.commons.api.client.LngbkApi
 import com.lngbk.commons.api.errors.{ApiCriticalError, CommonErrorCodes}
-import com.lngbk.commons.api.server.LngbkActor
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

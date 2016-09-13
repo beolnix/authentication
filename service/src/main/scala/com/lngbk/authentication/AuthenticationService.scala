@@ -14,7 +14,7 @@ import org.slf4j.{Logger, LoggerFactory}
 object AuthenticationService extends App {
   private val logger: Logger = LoggerFactory.getLogger("AuthenticationService")
 
-  AuthenticationApi
+  val api = new AuthenticationApi()
   ServiceBootstrapDirector.initService(false, true)
   SystemManager.system.actorOf(Props[AuthenticationActor], AuthenticationConstants.serviceName)
   logger.info("Service started successfully")
