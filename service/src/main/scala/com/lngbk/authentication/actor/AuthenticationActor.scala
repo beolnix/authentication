@@ -12,17 +12,10 @@ import org.slf4j.{Logger, LoggerFactory}
 /**
   * Created by beolnix on 10/09/16.
   */
-class AuthenticationActor extends Actor {
+class AuthenticationActor extends LngbkActor {
   private val logger: Logger = LoggerFactory.getLogger(classOf[AuthenticationActor])
-
-  override def receive: Receive = {
-    case LngbkVersionRequest() => {
-      val response = LngbkVersionResponse(
-        VersionHelper.minCompatibleVersion, VersionHelper.currentVersion
-      )
-      logger.info(s"Got version request, send back: $response")
-      sender() ! response
-    }
+  
+  override def process: Receive = {
     case LoginRequest(login, password) => {
       sender() ! LoginResponse("test", "test", 123)
     }
