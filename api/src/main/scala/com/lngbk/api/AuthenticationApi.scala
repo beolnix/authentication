@@ -11,12 +11,15 @@ object AuthenticationConstants {
   val serviceName = "authentication"
 }
 
-class AuthenticationApi(actorPath: Option[ActorPath] = None) extends LngbkApi(AuthenticationConstants.serviceName, actorPath = actorPath) {
+object AuthenticationApi {
+  private var api: AuthenticationApi = null
 
-  initApi()
+  def apply(actorPath: Option[ActorPath] = None): Unit = {
+    api = new AuthenticationApi(actorPath)
+  }
 
   def login(request: LoginRequest): Future[LoginResponse] = {
-    val response: Future[Any] = router ? request
+    val response: Future[Any] = api.router ? request
     response.map {
       case LoginResponse(accessToken, refreshToken, period, errorCode) => LoginResponse(accessToken, refreshToken, period, errorCode)
       case _ => throw new ApiCriticalError(CommonErrorCodes.PIZDEC)
@@ -24,7 +27,7 @@ class AuthenticationApi(actorPath: Option[ActorPath] = None) extends LngbkApi(Au
   }
 
   def verify(request: VerifyRequest): Future[VerifyResponse] = {
-    val response = router ? request
+    val response = api.router ? request
     response.map {
       case VerifyResponse(userUuid, login, roles, errorCode) => VerifyResponse(userUuid, login, roles, errorCode)
       case _ => throw new ApiCriticalError(CommonErrorCodes.PIZDEC)
@@ -32,11 +35,25 @@ class AuthenticationApi(actorPath: Option[ActorPath] = None) extends LngbkApi(Au
   }
 
   def signUp(request: SignUpRequest): Future[SignUpResponse] = {
-    val response = router ? request
+    val response = api.router ? request
     response.map {
       case SignUpResponse(userUuid, errorCode) => SignUpResponse(userUuid, errorCode)
       case _ => throw new ApiCriticalError(CommonErrorCodes.PIZDEC)
     }
   }
+
+  def refreshToken(request: RefreshTokenRequest): Future[RefreshTokenResponse] = {
+    val response = api.router ? request
+    response.map {
+      case RefreshTokenResponse(accessToken, errorCode) => RefreshTokenResponse(accessToken, errorCode)
+      case _ => throw new ApiCriticalError(CommonErrorCodes.PIZDEC)
+    }
+  }
+
+}
+
+class AuthenticationApi(actorPath: Option[ActorPath] = None) extends LngbkApi(AuthenticationConstants.serviceName, actorPath = actorPath) {
+
+  initApi()
 
 }

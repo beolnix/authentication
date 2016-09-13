@@ -54,10 +54,10 @@ class MultiNodeAuthentication extends MultiNodeSpec(MultiNodeAuthenticationConfi
         SystemManager.initWithSystem(system)
         enterBarrier("deployed")
 
-        val api = new AuthenticationApi(Some(node(serverNode)))
+        AuthenticationApi(Some(node(serverNode)))
         ServiceBootstrapDirector.initService(true, true)
 
-        val response = api.login(LoginRequest("login", "password", UUID.randomUUID().toString))
+        val response = AuthenticationApi.login(LoginRequest("login", "password", UUID.randomUUID().toString))
         val result = Await.ready(response, Duration.Inf).value.get
         println(result)
         result must not be null

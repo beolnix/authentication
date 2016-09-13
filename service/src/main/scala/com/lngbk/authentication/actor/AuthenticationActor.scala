@@ -2,13 +2,9 @@ package com.lngbk.authentication.actor
 
 import java.util.UUID
 
-import akka.actor.Actor
-import akka.actor.Actor.Receive
 import com.lngbk.api._
-import com.lngbk.commons.api.dto.{LngbkVersionRequest, LngbkVersionResponse}
 import com.lngbk.commons.api.errors.{ApiCriticalError, CommonErrorCodes}
 import com.lngbk.commons.api.server.LngbkActor
-import com.lngbk.commons.api.util.VersionHelper
 import org.slf4j.{Logger, LoggerFactory}
 
 /**
@@ -29,6 +25,10 @@ class AuthenticationActor extends LngbkActor {
     case VerifyRequest(accessToken, requestUuid) => {
       logger.info(s"got verify request: $accessToken, $requestUuid")
       sender() ! VerifyResponse(UUID.randomUUID().toString, "test", Set(), None)
+    }
+    case RefreshTokenRequest(refreshToken, requestUuid) => {
+      logger.info(s"got refresh token request: $refreshToken, $requestUuid")
+      sender() ! RefreshTokenResponse("test", None)
     }
     case other => {
       println(s"SERVER GOT $other")

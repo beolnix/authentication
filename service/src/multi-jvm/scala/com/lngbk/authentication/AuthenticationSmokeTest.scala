@@ -30,10 +30,10 @@ class AuthenticationSmokeTestMultiJvmClientNode2 extends WordSpec with MustMatch
   "A client node" should {
     "Successfully resolve dependency" in {
       Thread.sleep(3000)
-      val api = new AuthenticationApi()
+      AuthenticationApi()
       ServiceBootstrapDirector.initService(true, true)
       Thread.sleep(1500)
-      val response = api.login(LoginRequest("login", "password", UUID.randomUUID().toString))
+      val response = AuthenticationApi.login(LoginRequest("login", "password", UUID.randomUUID().toString))
       val result = Await.ready(response, Duration.Inf).value.get
 
       println(result)

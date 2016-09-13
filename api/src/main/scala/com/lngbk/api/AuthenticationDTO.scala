@@ -64,3 +64,21 @@ case class SignUpResponse(
   }
 }
 
+case class RefreshTokenRequest(
+                              refreshToken: String,
+                              requestUuid: String
+                              ) extends LngbkRequest(requestUuid) {
+  def this() {
+    this(null, UUID.randomUUID().toString)
+  }
+}
+
+case class RefreshTokenResponse(
+                               accessToken: String,
+                               errorCode: Option[String]
+                               ) extends LngbkResponse(errorCode) {
+  def this() {
+    this(null, None)
+  }
+}
+
