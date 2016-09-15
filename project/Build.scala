@@ -8,7 +8,7 @@ object MyBuild extends Build {
   lazy val root = project.in(file(".")).aggregate(service, api)
 
   val akkaVersion = "2.4.10"
-  val commonsVersion = "0.0.36-SNAPSHOT"
+  val commonsVersion = "0.0.38-SNAPSHOT"
 
   lazy val service = project
     .settings(SbtMultiJvm.multiJvmSettings: _*)
@@ -16,9 +16,11 @@ object MyBuild extends Build {
       libraryDependencies ++=
 
         Seq(
-          "com.lngbk" %% "management" % commonsVersion changing(),
-          "com.lngbk" %% "api" % commonsVersion changing(),
-          "com.lngbk" %% "service" % commonsVersion changing(),
+          "com.lngbk" %% "commons-management" % commonsVersion changing(),
+          "com.lngbk" %% "commons-api" % commonsVersion changing(),
+          "com.lngbk" %% "commons-service" % commonsVersion changing(),
+          "com.lngbk" %% "commons-datastore" % commonsVersion changing(),
+          "com.lngbk" %% "commons-discovery" % commonsVersion changing(),
 
           "com.typesafe.akka" %% "akka-actor" % akkaVersion,
           "com.typesafe.akka" %% "akka-remote" % akkaVersion,
@@ -54,8 +56,11 @@ object MyBuild extends Build {
       libraryDependencies ++=
 
         Seq(
-          "com.lngbk" %% "management" % commonsVersion changing(),
-          "com.lngbk" %% "api" % commonsVersion changing(),
+          "com.lngbk" %% "commons-management" % commonsVersion changing(),
+          "com.lngbk" %% "commons-api" % commonsVersion changing(),
+          "com.lngbk" %% "commons-service" % commonsVersion changing(),
+          "com.lngbk" %% "commons-datastore" % commonsVersion changing(),
+          "com.lngbk" %% "commons-discovery" % commonsVersion changing(),
 
           "com.typesafe.akka" %% "akka-actor" % akkaVersion,
           "com.typesafe.akka" %% "akka-remote" % akkaVersion,

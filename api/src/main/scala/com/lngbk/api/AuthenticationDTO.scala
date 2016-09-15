@@ -2,7 +2,7 @@ package com.lngbk.api
 
 import java.util.UUID
 
-import com.lngbk.commons.api.dto.{LngbkRequest, LngbkResponse}
+import com.lngbk.commons.api.dto.{LngbkRequest, LngbkResponse, UserDTO}
 
 case class VerifyResponse(
                            userUuid: String,
@@ -18,7 +18,7 @@ case class VerifyResponse(
 case class VerifyRequest(
                           accessToken: String,
                           requestUuid: String
-                        ) extends LngbkRequest(requestUuid) {
+                        ) extends LngbkRequest(requestUuid, Option.empty[UserDTO]) {
   def this() {
     this(null, UUID.randomUUID().toString)
   }
@@ -39,7 +39,7 @@ case class LoginRequest(
                          login: String,
                          password: String,
                          requestUuid: String
-                       ) extends LngbkRequest(requestUuid) {
+                       ) extends LngbkRequest(requestUuid, Option.empty[UserDTO]) {
   def this() {
     this(null, null, UUID.randomUUID().toString)
   }
@@ -49,7 +49,7 @@ case class SignUpRequest(
                         email: String,
                         password: String,
                         requestUuid: String
-                        ) extends LngbkRequest(requestUuid) {
+                        ) extends LngbkRequest(requestUuid, Option.empty[UserDTO]) {
   def this() {
     this(null, null, UUID.randomUUID().toString)
   }
@@ -67,7 +67,7 @@ case class SignUpResponse(
 case class RefreshTokenRequest(
                               refreshToken: String,
                               requestUuid: String
-                              ) extends LngbkRequest(requestUuid) {
+                              ) extends LngbkRequest(requestUuid, Option.empty[UserDTO]) {
   def this() {
     this(null, UUID.randomUUID().toString)
   }
